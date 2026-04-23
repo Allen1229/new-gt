@@ -1,0 +1,173 @@
+const fs=require('fs');
+const I={
+pc:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+mob:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>`,
+chev:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>`,
+left:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>`,
+right:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>`,
+bk:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>`
+};
+const P=`<div class="game-card__platforms"><span class="plat-btn" title="電腦">${I.pc}</span><span class="plat-btn" title="iOS">${I.mob}</span><span class="plat-btn" title="安卓">${I.mob}</span></div>`;
+const QR=`<div class="game-card__qr">QR Code</div>`;
+const arrows=`<div class="row-section__arrows"><button class="arrow-btn" disabled>${I.left}</button><button class="arrow-btn">${I.right}</button></div>`;
+function gc(img,alt,type,name,ph){
+  const imgH=ph?`<div class="game-card__img game-card__img--placeholder"><span>暫代圖</span>${QR}</div>`:`<div class="game-card__img"><img src="${img}" alt="${alt}">${QR}</div>`;
+  return `<a href="#" class="game-card">${imgH}<div class="game-card__type">${type}</div><div class="game-card__bottom"><span class="game-card__name">${name}</span>${P}</div></a>`;
+}
+function slide(i,bg,logo,label,desc,active){
+  return `<div class="hero-slide${active?' active':''}" data-index="${i}"><div class="hero-slide__bg"><img src="${bg}" alt=""></div><div class="hero-slide__overlay"></div><div class="hero-slide__content"><img src="${logo}" alt="" class="hero-slide__logo"><div class="hero-slide__label">${label}</div><p class="hero-slide__desc">${desc}</p><div class="hero-slide__price">免費</div><div class="hero-slide__actions"><a href="#" class="btn-primary">立即遊玩</a><button class="btn-icon" title="加入最愛">${I.bk}</button></div></div></div>`;
+}
+function sb(img,name,i,active){
+  return `<a href="#" class="sidebar-item${active?' active':''}" data-slide="${i}"><img src="${img}" alt="" class="sidebar-item__img"><span class="sidebar-item__name">${name}</span></a>`;
+}
+function fc(img,title,desc){
+  return `<a href="#" class="feature-card"><div class="feature-card__img"><img src="${img}" alt="${title}">${QR}</div><div class="feature-card__body"><div class="feature-card__title">${title}</div><p class="feature-card__desc">${desc}</p><div class="feature-card__actions"><span class="feature-card__cta">前往官網</span><span class="plat-btn" title="電腦">${I.pc}</span><span class="plat-btn" title="iOS">${I.mob}</span><span class="plat-btn" title="安卓">${I.mob}</span></div></div></a>`;
+}
+function nc(cat,catClass,title,date){
+  return `<a href="#" class="news-card"><div class="news-card__cat news-card__cat--${catClass}">${cat}</div><div class="news-card__title">${title}</div><div class="news-card__date">${date}</div></a>`;
+}
+function svc(href,svgPath,name,desc){
+  return `<a href="${href}" class="service-card" target="_blank"><div class="service-card__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">${svgPath}</svg></div><div class="service-card__name">${name}</div><div class="service-card__desc">${desc}</div></a>`;
+}
+const html=`<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>gametower 遊戲平台 | 你的遊戲宇宙</title>
+<meta name="description" content="gametower遊戲平台 — 明星3缺1、滿貫大亨、競技麻將等多款免費線上遊戲，提供儲值、會員、領獎、客服等完整服務。">
+<link rel="stylesheet" href="index.css">
+<link rel="icon" href="images/logo_g.png">
+</head>
+<body>
+<!-- ===== TOP NAV ===== -->
+<nav class="nav" id="nav">
+  <div class="nav__left">
+    <a href="#"><img src="images/GT_logo.png" alt="gametower" class="nav__logo"></a>
+    <a href="javascript:void(0)" class="nav__link">會員特區</a>
+    <a href="javascript:void(0)" class="nav__link">點數儲值</a>
+    <a href="javascript:void(0)" class="nav__link">客服中心</a>
+    <a href="javascript:void(0)" class="nav__link">領獎中心</a>
+  </div>
+  <div class="nav__right">
+    <a href="#" class="nav__btn">登入</a>
+    <a href="#" class="nav__btn nav__btn--primary">註冊</a>
+  </div>
+</nav>
+<!-- ===== SUB NAV ===== -->
+<div class="subnav">
+  <div class="subnav__inner">
+    <div class="subnav__search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>搜尋遊戲</span>
+    </div>
+    <div class="subnav__tabs">
+      <a href="#sec-all-games" class="subnav__tab">所有遊戲</a>
+      <a href="#sec-hot-games" class="subnav__tab">熱門遊戲</a>
+      <a href="#sec-news" class="subnav__tab">最新消息</a>
+      <a href="#sec-services" class="subnav__tab">玩家服務</a>
+    </div>
+  </div>
+</div>
+<!-- ===== HERO ===== -->
+<section class="hero-spot"><div class="hero-spot__main">
+  <div class="hero-spot__banner" id="heroBanner">
+    ${slide(0,'images/1920x450_TMD.jpg','images/230x80_TMD.png','人氣推薦','集合拉霸機、捕魚機、百家樂等豐富遊戲，超高中獎率，千萬玩家共同推薦！',true)}
+    ${slide(1,'images/1920x450_slam888.png','images/230x80_slam888.png','全新上線','埃及黃金主題娛樂城，法老王等級的頂級體驗！',false)}
+    ${slide(2,'images/1920x450_cmj2.jpg','images/230x80_cmj2.png','經典必玩','即時配對、公平競技 — 與全台高手過招，贏取豐厚大獎。',false)}
+  </div>
+  <aside class="hero-spot__sidebar">
+    ${sb('images/pic_TMD.png','滿貫大亨',0,true)}
+    ${sb('images/pic_slam888.png','大滿貫娛樂城',1,false)}
+    ${sb('images/pic_cmj2.png','競技麻將2',2,false)}
+    ${sb('images/pic_iStar31.png','明星3缺1',3,false)}
+    ${sb('images/pic_pg.png','玩星派對',4,false)}
+    ${sb('images/pic_slottrip777.png','幸運拉霸GO',5,false)}
+  </aside>
+</div></section>
+<!-- ===== 所有遊戲 ===== -->
+<section class="row-section" id="sec-all-games">
+  <div class="row-section__head"><h2 class="row-section__title">所有遊戲 ${I.chev}</h2>${arrows}</div>
+  <div class="game-row">
+    ${gc('images/hotGame_TMD.jpg','滿貫大亨','博弈娛樂','滿貫大亨')}
+    ${gc('images/hotGame_slam888.jpg','大滿貫娛樂城','博弈娛樂','大滿貫娛樂城')}
+    ${gc('images/hotGame_CMJ2.jpg','競技麻將2','棋牌競技','競技麻將2')}
+    ${gc('images/hotGame_Star31.jpg','明星3缺1','棋牌休閒','明星3缺1')}
+    ${gc('','','休閒派對','玩星派對',true)}
+    ${gc('','','拉霸機台','幸運拉霸GO',true)}
+  </div>
+</section>
+<!-- ===== 熱門遊戲 ===== -->
+<section class="row-section" id="sec-hot-games">
+  <div class="row-section__head"><h2 class="row-section__title">熱門遊戲 ${I.chev}</h2></div>
+  <div class="feature-row">
+    ${fc('images/1920x450_slam888.png','大滿貫娛樂城','全新埃及黃金主題，法老王等級的頂級體驗！百家樂、拉霸機、捕魚機一次滿足。')}
+    ${fc('images/1920x450_cmj2.jpg','競技麻將2','即時配對、公平競技，與全台高手過招，刺激競賽拚大獎！')}
+    ${fc('images/1920x450_pg.jpg','玩星派對','可愛角色陪你闖關，免費送禮沒在怕，歡樂無上限！')}
+  </div>
+</section>
+<!-- ===== 最新消息 ===== -->
+<section class="row-section" id="sec-news">
+  <div class="row-section__head"><h2 class="row-section__title">最新消息 ${I.chev}</h2>${arrows}</div>
+  <div class="news-row">
+    ${nc('活動','event','【滿貫大亨】四月歡慶祭 — 登入即送百萬遊戲幣！','2026/04/22')}
+    ${nc('系統','system','【大滿貫娛樂城】全新埃及主題改版上線公告','2026/04/20')}
+    ${nc('系統','system','【平台公告】gametower 會員系統升級通知','2026/04/18')}
+    ${nc('系統','system','【競技麻將2】4/16 定期維護公告','2026/04/15')}
+    ${nc('活動','event','【明星3缺1】春季麻將王爭霸賽正式開打！','2026/04/14')}
+    ${nc('系統','system','【玩星派對】全新關卡「星空冒險」限時開放','2026/04/12')}
+  </div>
+</section>
+<!-- ===== 玩家服務 ===== -->
+<section class="service-section" id="sec-services">
+  <div class="service-section__head">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <h2>玩家服務</h2>
+    <a href="#" class="service-section__more">查看更多</a>
+  </div>
+  <div class="service-row">
+    ${svc('https://www.gametower.com.tw/Services/Billing/index.aspx','<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>','線上儲值','多元支付方式，安全快速儲值遊戲幣')}
+    ${svc('https://www.gametower.com.tw/Services/Customer/Guide/member/index.aspx','<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>','會員註冊','加入會員享專屬福利與遊戲特權')}
+    ${svc('https://www.gametower.com.tw/Services/Customer/Prize/index.aspx','<path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 110-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/>','領獎中心','活動獎品、序號兌換，一鍵領取')}
+    ${svc('https://www.gametower.com.tw/Services/Customer/BugReport/index.aspx','<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>','客服中心','問題回報與常見問題，24小時為你服務')}
+  </div>
+</section>
+<!-- ===== 跨平台 ===== -->
+<section class="row-section" style="text-align:center">
+  <h2 class="row-section__title" style="justify-content:center">隨時隨地，暢玩無限</h2>
+  <p class="row-section__subtitle">跨平台無縫體驗，你的遊戲不中斷</p>
+  <div class="platform-row">
+    <a href="#" class="platform-card"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg><span>iOS</span></a>
+    <a href="#" class="platform-card"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg><span>Android</span></a>
+    <a href="#" class="platform-card"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>Windows</span></a>
+    <a href="#" class="platform-card"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span>Web</span></a>
+  </div>
+</section>
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer__grid">
+    <div><img src="images/Footer_GT_logo.png" alt="gametower" class="footer__brand-logo"><p class="footer__brand-desc">gametower 遊戲平台 — 台灣玩家信賴的遊戲品牌。公平透明、歡樂無限。</p></div>
+    <div><div class="footer__col-title">遊戲產品</div><a href="#" class="footer__link">滿貫大亨</a><a href="#" class="footer__link">大滿貫娛樂城</a><a href="#" class="footer__link">競技麻將2</a><a href="#" class="footer__link">明星3缺1</a><a href="#" class="footer__link">玩星派對</a><a href="#" class="footer__link">幸運拉霸GO</a><a href="#" class="footer__link">唯舞獨尊</a></div>
+    <div><div class="footer__col-title">玩家服務</div><a href="#" class="footer__link">線上儲值</a><a href="#" class="footer__link">會員註冊</a><a href="#" class="footer__link">領獎中心</a><a href="https://www.gametower.com.tw/Services/Customer/Guide/member/member_contract.aspx" class="footer__link" target="_blank">使用者合約</a><a href="https://www.gametower.com.tw/Services/Customer/Guide/member/member_privacy.aspx" class="footer__link" target="_blank">隱私權保護</a><a href="https://www.gametower.com.tw/Services/Customer/BugReport/index.aspx" class="footer__link" target="_blank">問題回報</a></div>
+    <div><div class="footer__col-title">企業資訊</div><a href="https://www.gametower.com.tw/CROP/about/about_01.aspx" class="footer__link" target="_blank">關於我們</a><a href="https://www.gametower.com.tw/CROP/cooperation.aspx" class="footer__link" target="_blank">合作提案</a><a href="https://www.gametower.com.tw/CROP/contact.aspx" class="footer__link" target="_blank">聯絡我們</a><a href="https://www.gametower.com.tw/Services/Customer/Guide/security/index.aspx" class="footer__link" target="_blank">安全說明</a></div>
+  </div>
+  <div class="footer__bottom">
+    <div class="footer__copy">© 2026 gametower. All rights reserved.</div>
+    <div class="footer__legal">※本遊戲為免費使用，遊戲內另提供購買虛擬遊戲幣、物品等付費服務。※請注意遊戲時間，避免沉迷。※本遊戲提供之機會中獎商品，消費者購買或參加活動不代表即可獲得特定商品。※於平台上尊重包容多元性別及個體差異。</div>
+  </div>
+</footer>
+<script>
+const slides=document.querySelectorAll('.hero-slide'),sideItems=document.querySelectorAll('.sidebar-item');
+let cur=0,timer;
+function goSlide(i){slides[cur].classList.remove('active');if(sideItems[cur])sideItems[cur].classList.remove('active');cur=i;slides[cur].classList.add('active');if(sideItems[cur])sideItems[cur].classList.add('active');resetTimer()}
+function nextSlide(){goSlide((cur+1)%slides.length)}
+function resetTimer(){clearInterval(timer);timer=setInterval(nextSlide,6000)}
+sideItems.forEach(s=>{s.addEventListener('click',e=>{e.preventDefault();const i=+s.dataset.slide;if(i<slides.length)goSlide(i)})});
+resetTimer();
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>40));
+</script>
+</body>
+</html>`;
+fs.writeFileSync('d:\\\\AI\\\\Projects\\\\NEW-GT\\\\index.html',html,'utf8');
+console.log('Done: index.html written');
