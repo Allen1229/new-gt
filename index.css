@@ -24,8 +24,8 @@ a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer}i
 .subnav__tab.active{background:var(--gray-1);color:var(--text)}
 
 /* ===== HERO SPOTLIGHT ===== */
-.hero-spot{padding:clamp(1rem,2vw,1.5rem) var(--pad);max-width:1400px;margin:0 auto}
-.hero-spot__main{display:grid;grid-template-columns:1fr 240px;gap:1rem;min-height:420px}
+.hero-spot{padding:clamp(1rem,2vw,1.5rem) var(--pad);max-width:1400px;margin:0 auto;margin-top:56px}
+.hero-spot__main{display:grid;grid-template-columns:1fr 240px;gap:1rem;min-height:500px}
 .hero-spot__banner{position:relative;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border-l);background:var(--gray-1)}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .5s}
 .hero-slide.active{opacity:1;position:relative}
@@ -85,6 +85,15 @@ a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer}i
 .feature-card__desc{font-size:.78rem;color:var(--gray-4);line-height:1.5;margin-bottom:.6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .feature-card__cta{display:inline-block;padding:6px 18px;border-radius:var(--r);border:1px solid var(--border);font-size:.78rem;font-weight:600;color:var(--gray-5);background:#fff}
 .feature-card__actions{display:flex;align-items:center;gap:6px}
+
+/* ===== ACTIVITY ROW ===== */
+.activity-row{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.5rem,1vw,.8rem)}
+.activity-card{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border-l);background:var(--gray-1);display:block}
+.activity-card__img{aspect-ratio:375/140;overflow:hidden}
+.activity-card__img img{width:100%;height:100%;object-fit:cover}
+.activity-card__body{padding:clamp(.6rem,1vw,1rem)}
+.activity-card__tag{display:inline-block;font-size:.68rem;font-weight:600;color:var(--gray-4);border:1px solid var(--border-l);border-radius:4px;padding:1px 8px;margin-bottom:.3rem}
+.activity-card__title{font-size:.85rem;font-weight:700;color:var(--text)}
 
 /* ===== NEWS ROW ===== */
 .news-row{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(.5rem,1vw,.8rem)}
